@@ -34,7 +34,8 @@ trait CRUDGenerator
             if(method_exists($this->loadHook(),'hook_after_add'))
                 $this->loadHook()->hook_after_add($request,$record);
             //delete old cache data
-            Cache::tags([$this->table])->flush();
+            if ($this->__is_cache_record)
+                Cache::tags([$this->table])->flush();
             //set response
             return $this->getRecordBySlug($request,$record->slug);
         }
@@ -118,7 +119,8 @@ trait CRUDGenerator
             if(method_exists($this->loadHook(),'hook_after_edit'))
                 $this->loadHook()->hook_after_edit($request, $slug);
             //delete old cache data
-            Cache::tags([$this->table])->flush();
+            if ($this->__is_cache_record)
+                Cache::tags([$this->table])->flush();
             //set response
             return $this->getRecordBySlug($request,$slug);
         }
@@ -153,7 +155,8 @@ trait CRUDGenerator
             $this->loadHook()->hook_after_delete($request, $records);
 
         //delete old cache data
-        Cache::tags([$this->table])->flush();
+        if ($this->__is_cache_record)
+            Cache::tags([$this->table])->flush();
 
         return true;
     }

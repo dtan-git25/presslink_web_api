@@ -18,7 +18,6 @@ class CreateOrdersTable extends Migration
             $table->string('slug');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('provider_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('chat_room_identifier')->nullable();
             $table->string('transition_id')->nullable();
             $table->string('card_id')->nullable();

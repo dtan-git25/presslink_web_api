@@ -29,7 +29,7 @@ class Auth extends JsonResource
            'cover_image_url'    => ($this->cover_image_url!=null)?Storage::url($this->cover_image_url):Storage::url('users/user_default.png'),
            'image_url_blur'    => ($this->image_url_blur!=null) ? $this->image_url_blur : 'LQQ]+wj[~qof_3j[j[j[WBfQIUay',
 //           'image_url_blur'     => (!empty($this->image_url)) ? BlurHash::encode(Storage::path($this->image_url)) : BlurHash::encode(Storage::path('users/user_default.png')),
-           'cover_image_url_blur' => (!empty($this->cover_image_url)) ? BlurHash::encode(Storage::path($this->cover_image_url)) : BlurHash::encode(Storage::path('users/user_default.png')),
+           'cover_image_url_blur' => ($this->cover_image_url_blur != null) ? $this->cover_image_url_blur : 'LQQ]+wj[~qof_3j[j[j[WBfQIUay',
            'status'             => $this->status,
            'rating'             => $this->rating,
            'total_ratings'      => $this->total_ratings,

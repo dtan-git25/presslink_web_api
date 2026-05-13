@@ -148,8 +148,7 @@ class UserHook
             $postdata['image_url'] = CustomHelper::uploadMedia('users',$request['image_url']);
             $postdata['image_url_blur'] = BlurHash::encode(Storage::path($postdata['image_url']));
         }else{
-            $postdata['image_url']  = 'users/user_default.png';
-            BlurHash::encode(Storage::path($postdata['image_url']));
+            $postdata['image_url'] = 'users/user_default.png';
         }
 
         if($request['user_role'] != 1){
@@ -203,23 +202,29 @@ class UserHook
         if(isset($request['user_role']) && $request->user_role != "") {
             //send verification email
             if (env('VERIFICATION_TYPE') == 'email') {
-                $mail_params['USERNAME'] = $record->name;
-                $mail_params['LINK'] = route('verifyEmail', ['name' => encrypt($record->email)]);
-                $mail_params['YEAR'] = date('Y');
-                $mail_params['APP_NAME'] = env('APP_NAME');
-                CustomHelper::sendMail($record->email, 'user_registration', $mail_params);
+                try {
+                    $mail_params['USERNAME'] = $record->name;
+                    $mail_params['LINK'] = route('verifyEmail', ['name' => encrypt($record->email)]);
+                    $mail_params['YEAR'] = date('Y');
+                    $mail_params['APP_NAME'] = env('APP_NAME');
+                    CustomHelper::sendMail($record->email, 'user_registration', $mail_params);
+                } catch (\Exception $e) {
+                    \Log::warning('Registration email failed: ' . $e->getMessage());
+                }
             }
 //            $record->update(['is_email_verify'=>1, 'email_verify_at'=>Carbon::now()]);
         }
 
         if($request['user_role'] == 1){
             $stripe = new Stripe;
-             $stripe_cus_id = $stripe->createCustomer([
+            $stripe_cus_id = $stripe->createCustomer([
                 'name' => $record->name,
                 'email' => $record->email,
             ]);
-            $record->stripe_cus_id = $stripe_cus_id['data']['customer_id'];
-            $record->update();
+            if (($stripe_cus_id['code'] ?? 0) == 200) {
+                $record->stripe_cus_id = $stripe_cus_id['data']['customer_id'];
+                $record->update();
+            }
         }
 
         $user = $request['user'];

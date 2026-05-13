@@ -13,6 +13,7 @@ class ContentManagementSeeder extends Seeder
      */
     public function run()
     {
+        \DB::table('content_management')->truncate();
         \DB::table('content_management')->insert([
             [
                 'title' => 'Terms Condition',

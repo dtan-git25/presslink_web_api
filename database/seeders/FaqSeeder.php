@@ -13,6 +13,7 @@ class FaqSeeder extends Seeder
      */
     public function run()
     {
+        \DB::table('faqs')->truncate();
         \DB::table('faqs')->insert([
             [
                 'slug' => uniqid(uniqid()),

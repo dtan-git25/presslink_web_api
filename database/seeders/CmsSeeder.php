@@ -16,6 +16,17 @@ class CmsSeeder extends Seeder
      */
     public function run()
     {
+        // Truncate in dependency order so FK constraints don't block; Postgres grammar uses RESTART IDENTITY CASCADE
+        \DB::table('cms_widget_role')->truncate();
+        \DB::table('cms_module_permissions')->truncate();
+        \DB::table('cms_users')->truncate();
+        \DB::table('cms_modules')->truncate();
+        \DB::table('cms_widgets')->truncate();
+        \DB::table('cms_roles')->truncate();
+        \DB::table('user_groups')->truncate();
+        \DB::table('mail_templates')->truncate();
+        \DB::table('application_setting')->truncate();
+
         $role_id = $this->addCmsRoles();
         $this->addCmsUser($role_id);
         $this->addCmsModules();
@@ -195,7 +206,7 @@ class CmsSeeder extends Seeder
                     'link'             => '/admin/app-users',
                     'widget_type'      => 'small_box',
                     'sql'              => 'Select count(*) from users limit 1',
-                    'config'           => NULL,
+                    'config'           => '',
                 ],
                 [
                     'title'       => 'Total Roles',
@@ -206,7 +217,7 @@ class CmsSeeder extends Seeder
                     'link'             => '/admin/app-users',
                     'widget_type'      => 'small_box',
                     'sql'              => 'Select count(*) from users limit 1',
-                    'config'           => NULL,
+                    'config'           => '',
                 ],
                 [
                     'title'       => 'Total User',
@@ -217,7 +228,7 @@ class CmsSeeder extends Seeder
                     'link'             => '/admin/app-users',
                     'widget_type'      => 'small_box',
                     'sql'              => 'Select count(*) from users limit 1',
-                    'config'           => NULL,
+                    'config'           => '',
                 ],
                 [
                     'title'       => 'Total Roles',
@@ -228,7 +239,7 @@ class CmsSeeder extends Seeder
                     'link'             => '/admin/app-users',
                     'widget_type'      => 'small_box',
                     'sql'              => 'Select count(*) from users limit 1',
-                    'config'           => NULL,
+                    'config'           => '',
                 ],
                 [
                     'title'       => 'Users',
@@ -239,7 +250,7 @@ class CmsSeeder extends Seeder
                     'link'             => '/admin/app-users',
                     'widget_type'      => 'line_chart',
                     'sql'              => 'SELECT count(id) AS value, MONTHNAME(created_at) as label FROM users where YEAR(created_at) = YEAR(now()) group by MONTH(created_at) order by MONTH(created_at) asc',
-                    'config'           => NULL,
+                    'config'           => '',
                 ]
             ]);
 

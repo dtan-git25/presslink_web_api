@@ -18,8 +18,8 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('chat_room_id')->constrained('chat_rooms')->onDelete('cascade');
 //            $table->string('slug', 100)->unique();
-            $table->text('message')->nullable()->collation("utf8mb4_unicode_ci");
-            $table->string('message_type',33)->default("text")->collation("utf8mb4_unicode_ci");
+            $table->text('message')->nullable();
+            $table->string('message_type',33)->default("text");
             $table->string('file_url', 33)->nullable();
             $table->text('file_data')->nullable();
             $table->text('custom_data')->nullable();
